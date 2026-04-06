@@ -10,18 +10,18 @@ const colors = {
 };
 
 /**
- * Оборачивает текст в ANSI-последовательность цвета.
+ * Wraps text in an ANSI color sequence.
  *
- * @param {"red"|"green"} color - Имя цвета из локальной палитры.
- * @param {string} text - Текст для окрашивания.
- * @returns {string} Окрашенный текст.
+ * @param {"red"|"green"} color - Color name from the local palette.
+ * @param {string} text - Text to colorize.
+ * @returns {string} Colorized text.
  */
 function colorize(color, text) {
   return `${colors[color]}${text}${colors.reset}`;
 }
 
 /**
- * Печатает справку по использованию CLI.
+ * Prints CLI usage information.
  *
  * @returns {void}
  */
@@ -31,11 +31,11 @@ Example: npx dtcg-validate ./tokens.json`);
 }
 
 /**
- * Форматирует одну ошибку Ajv для вывода в CLI.
+ * Formats a single Ajv error for CLI output.
  *
- * @param {import("ajv").ErrorObject & { schemaName?: string }} error - Ошибка валидации Ajv.
- * @param {number} index - Порядковый номер ошибки.
- * @returns {string} Читаемое сообщение об ошибке.
+ * @param {import("ajv").ErrorObject & { schemaName?: string }} error - Ajv validation error.
+ * @param {number} index - Error index in the list.
+ * @returns {string} Human-readable error message.
  */
 function formatError(error, index) {
   const instancePath = error.instancePath || "/";
@@ -45,10 +45,10 @@ function formatError(error, index) {
 }
 
 /**
- * Валидирует файл и печатает результат в консоль.
+ * Validates a file and prints the result to the console.
  *
- * @param {string} filePath - Путь к проверяемому файлу.
- * @returns {Promise<boolean>} `true`, если файл валиден.
+ * @param {string} filePath - Path to the file being validated.
+ * @returns {Promise<boolean>} `true` when the file is valid.
  */
 async function validateAndPrint(filePath) {
   try {
@@ -80,7 +80,7 @@ async function validateAndPrint(filePath) {
 }
 
 /**
- * Запускает CLI.
+ * Runs the CLI.
  *
  * @returns {Promise<void>}
  */
