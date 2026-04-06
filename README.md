@@ -1,91 +1,50 @@
 # dtcg-validate
 
-CLI tool to validate JSON (DTCG) files using Ajv.
-
-## Overview
-
-`dtcg-validate` validates JSON files against **DTCG schema version 2025.10**.
-
-* Uses Ajv for JSON Schema validation
-* Supports DTCG format validation
-* Supports validation of multiple files
-* Works as CLI (local or via npx)
-
----
+Minimal CLI for validating JSON files against the bundled DTCG 2025.10 `format` and `resolver` schemas.
 
 ## Usage
 
-### Run with npx (recommended)
+```bash
+npx dtcg-validate ./file.json
+```
+
+The validator automatically accepts both DTCG format files and resolver files.
+If a file does not match either schema, the CLI prints errors from both.
+
+## Structure
+
+`cli.js` - command-line interface and output formatting.  
+`index.js` - public API (`validate`, `validateFile`).  
+`lib/read-json.js` - reading and parsing JSON files.  
+`lib/dtcg-validator.js` - schema loading and in-memory validation logic.
+
+Multiple files:
 
 ```bash
-npx dtcg-validate ./tokens.json
+npx dtcg-validate ./file-a.json ./file-b.json
 ```
 
----
-
-### Validate multiple files
-
-You can pass multiple files separated by spaces:
+Help:
 
 ```bash
-npx dtcg-validate tokens1.json tokens2.json
+npx dtcg-validate --help
 ```
 
----
+## Node API
 
-### Install globally
+```js
+const { validateFile } = require("dtcg-validate");
 
-```bash
-npm install -g dtcg-validate
+const result = await validateFile("./file.json");
+
+if (!result.valid) {
+  console.log(result.errors);
+}
 ```
 
-```bash
-dtcg-validate ./tokens.json
-```
+## Notes
 
----
-
-### Local usage (development)
-
-```bash
-node ./cli.js ./tokens.json
-```
-
----
-
-## Example output
-
-```text
-tokens1.json
-1. /color/teal/50 (additionalProperties): must NOT have additional properties
-2. /color/teal/50/$value (type): must be object
-3. /color/teal/50/$value (pattern): must match pattern "^\{[^${}.][^{}.]*(\.[^${}.][^{}.]*)*\}$"
-4. /color/teal/50/$value (type): must be object
-5. /color/teal/50/$value (oneOf): must match exactly one schema in oneOf
-6. /color/teal/100/$value (pattern): must match pattern "^\{[^${}.][^{}.]*(\.[^${}.][^{}.]*)*\}$"
------
-tokens2.json conforms to DTCG 2025.10
------
-```
-
----
-
-## Schema
-
-This package uses:
-
-```
-DTCG Schema: 2025.10
-```
-
----
-
-## Tech
-
-* Ajv (JSON Schema validator)
-* ajv-formats
-
----
+The `format` and `resolver` schemas and their referenced DTCG schemas are bundled with the package.
 
 ## License
 
